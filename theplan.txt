@@ -17,7 +17,8 @@ Search page
     if no results, show add button.  Ask if that's a local or foreign IN, ask for corresponding IN, manufac, then run checks
         check if either IN exists, if not add to the DB and flag as a new addition with the user who added it
     
-
+Show table with near matches, including the actual matches
+show single card with likely result if there is only one perfect match
 
 
 add new item modal

@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
     },
     tableRoot: {
-        backgroundColor: 'rgba(255, 255, 255, 0.6)'
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
     },
 }));
 
@@ -72,8 +72,7 @@ const returnedSearchFiller = Array(200).fill({
     localItemNumber: 142065,
     foreignItemNumber: 3069000,
     foreignManufacturerName: 'Pirelli',
-})
-
+});
 
 // DATA
 // COLUMNS ResultNumber LocalIN ForeignIN ManufacName
@@ -104,6 +103,11 @@ const Search = () => {
     const classes = useStyles();
     // PUT IN LOADING BACKDROP FOR SEARCH
     const [loading, setLoading] = useState(false);
+    const [unitaryResult, setUnitaryResult] = useState({
+        localItemNumber: 142065,
+        foreignItemNumber: 3069000,
+        foreignManufacturerName: 'Pirelli',
+    });
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(12);
@@ -173,15 +177,14 @@ const Search = () => {
                     />
                 </Box>
             </div>
+            {unitaryResult && <SearchResult {...unitaryResult} />}
             <Paper className={classes.tableRoot}>
                 <TableContainer className={classes.tableContainer}>
                     <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 {columns.map((column) => (
-                                    <TableCell key={column.id}>
-                                        {column.label}
-                                    </TableCell>
+                                    <TableCell key={column.id}>{column.label}</TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
