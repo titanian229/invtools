@@ -3,17 +3,20 @@ const Schema = mongoose.Schema;
 
 const itemsSchema = new Schema({
     localItemNumber: {
-        type: Number,
+        type: String,
         required: true,
     },
     foreignItemNumber: {
-        type: Number,
-        required: true,
+        type: String,
+        // required: true,
     },
-    foreignCompanyName: {
+    foreignManufacturerName: {
         type: String,
     },
-    notes: {
+    info: {
+        type: String,
+    },
+    note: {
         type: String,
     },
 });
