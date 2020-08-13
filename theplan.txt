@@ -1,0 +1,34 @@
+Primary use, searches
+Secondary use, inv rectification
+
+global context provider for logged in status, user, etc.
+
+
+Main page
+    If logged in, redirect right in to search page
+    if not logged in, show login page
+    No registration, but add in a master user that can make new accounts and change passwords
+
+
+Search page
+    text field and submit button (also on enter)
+    results populated below
+    clickable items, populate modal with all info related to item including person who added it to the db and manufac
+    if no results, show add button.  Ask if that's a local or foreign IN, ask for corresponding IN, manufac, then run checks
+        check if either IN exists, if not add to the DB and flag as a new addition with the user who added it
+    
+
+
+
+add new item modal
+
+
+
+
+
+Schemas
+Items
+    have date added, person who added it
+
+
+PUT FOOTER ON MAIN PAGE WITH MY ATTRIBUTION

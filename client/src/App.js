@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Home from './pages/Home'
+import Search from './pages/Search'
 import './App.css'
 // Page imports
 
@@ -12,7 +13,7 @@ const theme = createMuiTheme({
             main: '#297B48',
         },
         secondary: {
-            main: '#AA4D39',
+            main: '#d81b60',
         },  
     },
     typography: {
@@ -39,8 +40,11 @@ function App() {
             <Router>
                 <Switch>
                     <Route exact path='/'>
-                        <Home />
+                        <Search />
                     </Route>
+                    {/* <Route exact path='/'>
+                        <Home />
+                    </Route> */}
                 </Switch>
             </Router>
             <div className="App"></div>
