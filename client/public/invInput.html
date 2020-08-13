@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Input Page</title>
+    </head>
+    <body>
+        <h2>This page has to be madly simple to load in internet explorer</h2>
+        <textarea style="width: 100%;" name="InvInput" id="invInput" cols="30" rows="10">
+Paste NSSDR then TSA1 here, submit each individually, then check the site on your phone.</textarea
+        >
+        <button onclick="submitData(event)">Submit</button>
+        <script>
+            const submitData = async (event) => {
+                event.preventDefault();
+                const data = { invTable: document.querySelector('#invInput').value };
+                console.log(data);
+                const response = await fetch('/api/invRectification', {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify(data),
+                });
+            };
+        </script>
+    </body>
+</html>

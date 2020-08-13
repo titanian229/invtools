@@ -15,7 +15,7 @@ const SearchResult = (props) => {
     const { localItemNumber, foreignItemNumber, foreignManufacturerName } = props;
     return (
         <Paper className={classes.resultContainer} elevation={3}>
-            <Typography variant="subtitle">
+            <Typography variant="subtitle1">
                 {localItemNumber} - {foreignItemNumber}
             </Typography>
             <Typography variant="subtitle2">{foreignManufacturerName}</Typography>

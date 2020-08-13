@@ -33,3 +33,6 @@ Items
 
 
 PUT FOOTER ON MAIN PAGE WITH MY ATTRIBUTION
+
+Add in MongoDB from atlas
+Add HTML page accessable from IE for entry to nssdr and tsa1

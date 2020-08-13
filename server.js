@@ -26,12 +26,15 @@ app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json());
 
-app.use(routes);
 
 app.use(express.static('client/build'));
+app.get('/invinput', (req, res) => {
+    res.sendFile('client/build/invInput.html', { root: __dirname });
+});
 app.get('*', (req, res) => {
     res.sendFile('client/build/index.html', { root: __dirname });
 });
+app.use(routes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
