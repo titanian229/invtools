@@ -227,6 +227,7 @@ const addIfNotPresent = async (item, collectionName, now) => {
 
     if (matchesPast > 0) {
         // console.log('There were matches, skipping item', item);
+        // console.log("Matched item", matches)
         return;
     }
 
@@ -237,44 +238,31 @@ const addIfNotPresent = async (item, collectionName, now) => {
         });
         return;
     }
-    console.log('ADDING ITEM', item)
-    await db[collectionName].create(item);
 
+    // console.log('ADDING ITEM', item)
+    await db[collectionName].create(item);
 };
 
 module.exports = async (data) => {
     // console.log(data)
+    const now = new Date();
 
-    // const processedData = processTSA(tsaInput);
-    // console.log('processedData', processedData);
     const tsaData = processTSA(data);
     if (tsaData.length > 0) {
-        // ADD TO DB
-        // console.log(tsaData);
-        // await db.TSA.insertMany(tsaData);
-        // console.table(tsaData)
-
-        // Checking if it exists in the DB, exact same with matching date, amount, item number, and if invoice that as well
+        for (let index = 0; index < tsaData.length; index++) {
+            const transaction = tsaData[index];
+            await addIfNotPresent(transaction, 'TSA', now);
+        }
 
         return tsaData;
     }
     const nssdrData = processNSSDR(data);
     if (nssdrData.length > 0) {
-        // await db.NSSDR.insertMany(nssdrData);
-        // console.table(nssdrData)
-        const now = new Date();
-        // console.log('CURRENT DB');
-        // console.table(await db.NSSDR.find());
-
         for (let index = 0; index < nssdrData.length; index++) {
             const transaction = nssdrData[index];
             await addIfNotPresent(transaction, 'NSSDR', now);
         }
-        // console.log('Database after change');
-        // console.table(await db.NSSDR.find());
-        // console.log('NSSDR DATA', await db.NSSDR.find())
 
         return nssdrData;
     }
-    // console.table(nssdrData);
 };
