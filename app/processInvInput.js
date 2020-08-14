@@ -1,3 +1,7 @@
+const db = require('../models');
+
+// TODO run logic before database entry creation
+
 const processTSARow = (item, inventoryTransaction) => {
     // Check if invoiceNumber
     const invoiceMatch = item.match(/1316\d\d\d\d\d\d\d/g);
@@ -36,8 +40,15 @@ const processTSARow = (item, inventoryTransaction) => {
 
 const processTSA = (data) => {
     //Extract each item, validate it's valid
+    let tsaInput = data.split('\n').map((row) =>
+        row
+            .split('\t')
+            .map((item) => item.trim())
+            .filter((item) => item !== '' && item !== ' ')
+    );
+
     const processedData = [];
-    data.forEach((row) => {
+    tsaInput.forEach((row) => {
         let inventoryTransaction = {
             invoiceNumber: '',
             date: '',
@@ -75,19 +86,19 @@ const processNSSDRItem = (item, transaction) => {
 
     const qtyMatch = item.match(/(^-\d\.\d\d$)|(^\d\.\d\d$)/g);
     if (qtyMatch) {
-        transaction.qty = qtyMatch[0];
+        if (!transaction.qty) transaction.qty = qtyMatch[0];
         return transaction;
     }
 
     const dollarMatch = item.match(/(^\d*\.\d*$)|(^-\d*\.\d*$)/g);
     if (dollarMatch) {
-        transaction.dollarAmount = dollarMatch[0];
+        if (!transaction.dollarAmount) transaction.dollarAmount = dollarMatch[0];
         return transaction;
     }
 
     const itemNumberMatch = item.match(/^\d\d\d\d*$/g);
     if (itemNumberMatch) {
-        transaction.itemNumber = itemNumberMatch[0];
+        if (!transaction.itemNumber) transaction.itemNumber = itemNumberMatch[0];
         return transaction;
     }
     console.log('failed to match', item);
@@ -185,61 +196,28 @@ const processNSSDR = (data) => {
         }
         previousTransaction = Object.create(transaction);
         transaction = Object.create(emptyTransaction);
-
-        // if (!transaction.itemNumber || !transaction.qty || !transaction.dollarAmount) {
-        //     // row has bad data, didn't find anything, move to next
-        //     index = index + 1;
-        //     transaction = emptyTransaction;
-        //     console.log('garbage row', row, transaction);
-        //     continue;
-        // }
-
-        // if (transaction.itemNumber && transaction.qty && transaction.dollarAmount) {
-        //     // got data I was looking for from row 1/2
-        //     console.log('success, checking for invoice', transaction);
-        //     const nextRow = nssdrInput[index + 1];
-        //     let nextRowItems = nextRow
-        //         .split(' ')
-        //         .map((item) => item.trim())
-        //         .filter((item) => item !== '');
-
-        //     nextRowItems.forEach((item) => {
-        //         transaction = processNSSDRItemsForInvoice(item, transaction);
-        //     });
-
-        //     // Now if transaction is added, go to 2 rows on and restart, else go to one row on and start over, adding the data in
-        //     nssdrData.push(transaction);
-        //     transaction = emptyTransaction
-        //     if (transaction.invoiceNumber) {
-        //         console.log('successfully found transaction', transaction);
-        //         index = index + 2;
-        //     } else {
-        //         console.log('unsuccessful found transaction', transaction);
-        //         index = index + 1;
-        //     }
-
-        //     continue;
-        // }
-
-        // console.log('somehow I find myself here');
     }
 
     return nssdrData;
 };
 
-module.exports = (data) => {
+module.exports = async (data) => {
     // console.log(data)
-    // let tsaInput = data.split('\n');
-    // tsaInput = tsaInput.map((row) =>
-    //     row
-    //         .split('\t')
-    //         .map((item) => item.trim())
-    //         .filter((item) => item !== '' && item !== ' ')
-    // );
+
     // const processedData = processTSA(tsaInput);
     // console.log('processedData', processedData);
+    const tsaData = processTSA(data);
+    if (tsaData.length > 0) {
+        // ADD TO DB
+        // console.log(tsaData);
+        await db.TSA.insertMany(tsaData);
 
+        return tsaData;
+    }
     const nssdrData = processNSSDR(data);
-
-    console.table(nssdrData);
+    if (nssdrData.length > 0) {
+        await db.NSSDR.insertMany(nssdrData);
+        return nssdrData;
+    }
+    // console.table(nssdrData);
 };

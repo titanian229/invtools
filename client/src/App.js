@@ -7,6 +7,7 @@ import './App.css';
 // Page imports
 import Home from './pages/Home';
 import Search from './pages/Search';
+import InvRect from './pages/InventoryRectification'
 
 import BottomNav from './components/BottomNav';
 
@@ -54,6 +55,9 @@ function App() {
                     <Switch>
                         <Route exact path="/">
                             <Search />
+                        </Route>
+                        <Route exact path="/report">
+                            <InvRect />
                         </Route>
                         {/* <Route exact path='/'>
                         <Home />

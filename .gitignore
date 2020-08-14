@@ -106,3 +106,4 @@ dist
 data/
 theplan.txt
 databaseSeeder.js
+hidden/
