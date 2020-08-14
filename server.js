@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const helmet = require('helmet');
 const cors = require('cors');
-const uuid = require('uuid').v4;
+// const uuid = require('uuid').v4;
 
 //AUTH
 const app = express();
@@ -22,14 +22,14 @@ app.use(express.json());
 app.use(logger('dev'));
 
 app.use(cors());
-app.use(helmet());
+// app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json());
 
 app.use(routes);
 app.use(express.static('client/build'));
 app.get('/invinput', (req, res) => {
-    res.sendFile('client/build/invInput.html', { root: __dirname });
+    res.sendFile('app/invInput.html', { root: __dirname });
 });
 app.get('*', (req, res) => {
     res.sendFile('client/build/index.html', { root: __dirname });

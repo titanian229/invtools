@@ -7,7 +7,7 @@ import './App.css';
 // Page imports
 import Home from './pages/Home';
 import Search from './pages/Search';
-import InvRect from './pages/InventoryRectification'
+import InvRect from './pages/InventoryRectification';
 
 import BottomNav from './components/BottomNav';
 
@@ -59,9 +59,9 @@ function App() {
                         <Route exact path="/report">
                             <InvRect />
                         </Route>
-                        {/* <Route exact path='/'>
-                        <Home />
-                    </Route> */}
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
                     </Switch>
                     <BottomNav />
                 </Router>

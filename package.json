@@ -15,7 +15,6 @@
         "build": "cd client && npm run build",
         "heroku-postbuild": "npm run build"
     },
-    "proxy": "http://localhost:3001",
     "dependencies": {
         "axios": "^0.19.2",
         "bcrypt": "^5.0.0",
@@ -33,5 +32,8 @@
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
         "uuid": "^8.3.0"
-    }
+    },
+    "repository": "https://github.com/titanian229/invtools.git",
+    "author": "JamesLee <48775473+titanian229@users.noreply.github.com>",
+    "license": "MIT"
 }
