@@ -7,10 +7,16 @@
     </head>
     <body>
         <h2>This page has to be madly simple to load in internet explorer</h2>
-        <textarea style="width: 100%;" name="InvInput" id="invInput" cols="30" rows="10">
-Paste NSSDR then TSA1 here, submit each individually, then check the site on your phone.</textarea
-        >
+        <textarea
+            style="width: 100%;"
+            name="InvInput"
+            id="invInput"
+            cols="30"
+            rows="10"
+            placeholder="Paste NSSDR then TSA1 here one at a time and submit each, then check the reports section of the site on your phone.  It usually takes around 6 or 7 seconds to fully process, but the processes are asynchronous so don't worry on your side.  Don't submit each multiple times within a one minute span though, or duplicates won't get flagged appropriately."
+        ></textarea>
         <button onclick="submitData(event)">Submit</button>
+        <img src="images/graphicdesign.png" style="width: 100%; height: auto; margin-top: 4em;" />
         <script>
             const submitData = async (event) => {
                 event.preventDefault();

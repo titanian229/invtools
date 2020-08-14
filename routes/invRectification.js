@@ -7,7 +7,7 @@ module.exports = (router) => {
             db.Debug.create({ information: body.invTable });
             // Process the data
             const processedData = await processInvInput(body.invTable);
-            console.table(processedData);
+            // console.table(processedData);
             res.status(200).send({ message: 'Success' });
         } catch (err) {
             console.log(err);

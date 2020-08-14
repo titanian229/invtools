@@ -6,12 +6,8 @@ const db = require('../models');
 
 const rectify = async () => {
     
-    // DATA I WANT OUT\
-    //
-
-
-
-    // Create list of items present in NSSDR and not TSA
+    const uniqueItemNumbers = await db.TSA.distinct('itemNumber')
+    console.log("rectify -> uniqueItemNumbers", uniqueItemNumbers)
 
 
 
