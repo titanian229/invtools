@@ -1,4 +1,20 @@
 {
+    "name": "invtools",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "engines": {
+        "node": "12.18.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js",
+        "start:dev": "concurrently \"nodemon --ignore 'client'\" \"npm run client\"",
+        "client": "cd client && npm run start",
+        "install": "cd client && npm install",
+        "build": "cd client && npm run build",
+        "heroku-postbuild": "npm run build"
+    },
     "proxy": "http://localhost:3001",
     "dependencies": {
         "axios": "^0.19.2",
