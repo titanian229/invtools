@@ -25,7 +25,7 @@ import clsx from 'clsx';
 import API from '../utils/API';
 
 import SearchResult from '../components/SearchResult';
-import SearchResultsTable from '../components/SearchResultsTable'
+import SearchResultsTable from '../components/SearchResultsTable';
 
 const useStyles = makeStyles((theme) => ({
     searchContainer: {
@@ -44,11 +44,19 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         // height: '30vh',
     },
-    mainContainer: {
+    bgContainer: {
         backgroundImage: 'url(/images/pexels-min-an-1353938.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
+        position: 'fixed',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: -1,
+    },
+    mainContainer: {
         // minHeight: '100vh',
         flexGrow: 1,
     },
@@ -108,7 +116,6 @@ const Search = () => {
     const [loading, setLoading] = useState(false);
     const [unitaryResult, setUnitaryResult] = useState(null);
     const [searchResults, setSearchResults] = useState([]);
-    
 
     const initialState = {
         search: '',
@@ -193,10 +200,8 @@ const Search = () => {
                 </Box>
             </div>
             {unitaryResult && <SearchResult {...unitaryResult} />}
-            {searchResults.length > 0 && (
-                <SearchResultsTable columns={columns} searchResults={searchResults} />
-            )}
-
+            {searchResults.length > 0 && <SearchResultsTable columns={columns} searchResults={searchResults} />}
+            <div className={classes.bgContainer}></div>
         </div>
     );
 };
