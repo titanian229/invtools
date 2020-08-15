@@ -33,7 +33,21 @@
                     redirect: 'follow',
                     referrerPolicy: 'no-referrer',
                     body: JSON.stringify(data),
-                });
+                }).then((response) => response.json());
+                console.log(response);
+
+                if (!response || response.status === 500) {
+                    console.log('Response is missing');
+                    alert("There was a weird error, ask James, it's been logged.");
+                    return;
+                }
+
+                if (response.error) {
+                    alert(response.error);
+                    return;
+                }
+
+                alert(response.message);
             };
         </script>
     </body>

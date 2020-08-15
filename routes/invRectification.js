@@ -6,9 +6,9 @@ module.exports = (router) => {
             // FIRST SAVE ALL DATA IN STRING FORMAT TO THE DB, FOR FUTURE DEBUGGING
             db.Debug.create({ information: body.invTable });
             // Process the data
-            const processedData = await processInvInput(body.invTable);
+            const reportStatement = await processInvInput(body.invTable);
             // console.table(processedData);
-            res.status(200).send({ message: 'Success' });
+            res.status(200).send(reportStatement);
         } catch (err) {
             console.log(err);
             res.status(500).send({ error: 'Something went wrong with the server' });
