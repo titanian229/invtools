@@ -15,10 +15,11 @@ const useStyles = makeStyles((theme) => ({
     generateContainer: {},
     generateButton: {
         marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
     },
     backdrop: {
         zIndex: 1000,
-    }
+    },
 }));
 
 const columns = [
@@ -76,10 +77,10 @@ const InventoryRectification = () => {
     };
 
     const fetchReport = async () => {
-        setLoading(true)
+        setLoading(true);
         const reportContents = await API.getReport();
         setReport(reportContents);
-        setLoading(false)
+        setLoading(false);
     };
 
     useEffect(() => {

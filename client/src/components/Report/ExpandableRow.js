@@ -23,6 +23,9 @@ const formatDate = (date) => {
 
 const useStyles = makeStyles((theme) => ({
     root: {},
+    smallerFont: {
+        fontSize: '0.7em'
+    }
 }));
 
 const ExpandableRow = (props) => {
@@ -32,16 +35,19 @@ const ExpandableRow = (props) => {
     return (
         <>
             <TableRow className={classes.root}>
-                <TableCell style={{maxWidth: '3ch'}}>
+                <TableCell style={{width: '3ch'}}>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
 
                 {/* <TableRow hover role="checkbox" tabIndex={-1} key={row.localItemNumber}> */}
-                {columns.map((column) => (
+                {/* {columns.map((column) => (
                     <TableCell key={column}>{row[column]}</TableCell>
-                ))}
+                ))} */}
+                <TableCell style={{width: '10ch'}}>{row.itemNumber}</TableCell>
+                <TableCell style={{width: '3ch'}}>{row.qty}</TableCell>
+                <TableCell style={{width: '9ch'}}>{row.dollarAmount}</TableCell>
                 {/* </TableRow> */}
             </TableRow>
 
@@ -55,21 +61,21 @@ const ExpandableRow = (props) => {
                             <Table size="small" aria-label="history">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Invoice</TableCell>
-                                        <TableCell align="right">Qty</TableCell>
-                                        <TableCell align="right">$</TableCell>
-                                        <TableCell align="left">Date</TableCell>
+                                        <TableCell className={classes.smallerFont}>Invoice</TableCell>
+                                        <TableCell className={classes.smallerFont} align="right">Qty</TableCell>
+                                        <TableCell className={classes.smallerFont} align="right">$</TableCell>
+                                        <TableCell className={classes.smallerFont} align="left">Date</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {row.invoices.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
-                                            <TableCell>{historyRow.invoiceNumber}</TableCell>
-                                            <TableCell align="right">{historyRow.qty}</TableCell>
-                                            <TableCell align="right">
+                                            <TableCell className={classes.smallerFont}>{historyRow.invoiceNumber}</TableCell>
+                                            <TableCell className={classes.smallerFont} align="right">{historyRow.qty}</TableCell>
+                                            <TableCell className={classes.smallerFont} align="right">
                                                 {historyRow.dollarAmount}
                                             </TableCell>
-                                            <TableCell component="th" scope="row">
+                                            <TableCell className={classes.smallerFont} component="th" scope="row">
                                                 {formatDate(historyRow.date)}
                                             </TableCell>
                                         </TableRow>

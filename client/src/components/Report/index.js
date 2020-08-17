@@ -54,10 +54,11 @@ const Report = (props) => {
                 </Table>
             </TableContainer> */}
             <TableContainer component={Paper}>
+                {/* TODO refactor to use columns array of obs, with width set */}
                 <Table aria-label="full report table">
                     <TableHead>
                         <TableRow>
-                            <TableCell  style={{maxWidth: '3ch'}} />
+                            <TableCell  style={{width: '3ch'}} />
                             <TableCell>Item #</TableCell>
                             <TableCell>Qty</TableCell>
                             <TableCell>$</TableCell>
