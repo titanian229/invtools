@@ -1,7 +1,7 @@
-// require('dotenv').config();
-// const mongoose = require('mongoose');
-// const MONGODB_URI = process.env.MONGODB_URI;
-// mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+require('dotenv').config();
+const mongoose = require('mongoose');
+const MONGODB_URI = process.env.MONGODB_URI;
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 const db = require('../models');
 
 const generateSingleCollectionReport = async (collectionName) => {
@@ -234,6 +234,12 @@ const reduceTotalQtyDollarAmount = (accumulatedResults, row) => {
 };
 
 const reduceTotalQtyDollarAmountDate = (accumulatedResults, row) => {
+    // console.log("Reducing TQDAD", accumulatedResults)
+    // console.log('row', row)
+    // if (row.invoiceNumber === '13160023566'){
+    //     console.log('That invoice', row)
+    //     console.log('Accumulator at start', accumulatedResults)
+    // }
     accumulatedResults.qty = addStrings(accumulatedResults.qty, row.qty);
     accumulatedResults.dollarAmount = addStrings(accumulatedResults.dollarAmount, row.dollarAmount);
 
@@ -244,6 +250,9 @@ const reduceTotalQtyDollarAmountDate = (accumulatedResults, row) => {
             accumulatedResults.date = row.date
         }
     }
+    // if (row.invoiceNumber === '13160023566'){
+    //     console.log('Accumulator at end', accumulatedResults)
+    // }
 
     return accumulatedResults;
 };
@@ -284,6 +293,7 @@ const completeCheck = async (dateStart = new Date(1900, 1, 1, 0, 0, 0, 0), dateE
         );
 
         const combinedRows = tsaRows.concat(nssdrRows).filter((row) => row.date > dateStart && row.date < dateEnd);
+        // console.log('ignored rows due to date range', tsaRows.concat(nssdrRows).filter((row) => !row.date > dateStart && !row.date < dateEnd))
 
         const { qty, dollarAmount } = combinedRows.reduce(reduceTotalQtyDollarAmount, { qty: 0, dollarAmount: 0 });
         overviewReportItems.push({ itemNumber, qty, dollarAmount });
@@ -314,7 +324,7 @@ const completeCheck = async (dateStart = new Date(1900, 1, 1, 0, 0, 0, 0), dateE
     const finalReport = finalReportItems
         .map((item) => ({
             ...item,
-            invoices: item.invoices.filter((invoice) => invoice.qty !== 0 && invoice.dollarAmount !== 0),
+            invoices: item.invoices.filter((invoice) => !(invoice.qty === 0 && invoice.dollarAmount === 0)),
         }))
         .filter((item) => item.invoices.length > 0);
 
@@ -384,44 +394,45 @@ const generateTSACheck = async () => {
     return issueReport;
 };
 
-// const rectify = async () => {
-//     const collections = ['NSSDR', 'TSA'];
+const rectify = async () => {
+    const collections = ['NSSDR', 'TSA'];
 
-//     // ! This is the report for verifying the totals regardless of invoice
-//     // let reports = await Promise.all(
-//     //     collections.map((collectionName) => generateSingleCollectionReport(collectionName))
-//     // );
+    // ! This is the report for verifying the totals regardless of invoice
+    // let reports = await Promise.all(
+    //     collections.map((collectionName) => generateSingleCollectionReport(collectionName))
+    // );
 
-//     // console.log(reports);
+    // console.log(reports);
 
-//     // ! Generating a report based on item number as well as invoice
-//     // await generateTSACheck();
-//     // const TSAtoNSSDR = await generateCheckBetweenCollectionsObject('TSA', 'NSSDR');
-//     // console.log('rectify -> TSAtoNSSDR', TSAtoNSSDR);
-//     // const NSSDRtoTSA = await generateCheckBetweenCollectionsArray('NSSDR', 'TSA');
-//     // console.log('rectify -> NSSDRtoTSA', NSSDRtoTSA);
+    // ! Generating a report based on item number as well as invoice
+    // await generateTSACheck();
+    // const TSAtoNSSDR = await generateCheckBetweenCollectionsObject('TSA', 'NSSDR');
+    // console.log('rectify -> TSAtoNSSDR', TSAtoNSSDR);
+    // const NSSDRtoTSA = await generateCheckBetweenCollectionsObject('NSSDR', 'TSA');
+    // console.log('rectify -> NSSDRtoTSA', NSSDRtoTSA);
 
-//     // ! Generating report in array format, comparing both collections
-//     // const TSAReport = await generateCheckBetweenCollectionsArray('TSA', 'NSSDR');
-//     // TSAReport.forEach((item) => console.log(item));
+    // ! Generating report in array format, comparing both collections
+    // const TSAReport = await generateCheckBetweenCollectionsArray('TSA', 'NSSDR');
+    // TSAReport.forEach((item) => console.log(item));
 
-//     // ! Generate complete report
-//     const report = await completeCheck();
-//     console.log(report);
+    // ! Generate complete report
+    const report = await completeCheck();
+    console.log('final report length', report.finalReport.length)
+    report.finalReport.forEach(row => console.log(row))
 
-//     // TODO add in function to prettify this data, before sending it to the client.
-//     // TODO make it a nice table format
+    // TODO add in function to prettify this data, before sending it to the client.
+    // TODO make it a nice table format
 
-//     // TSAReport.forEach(line => console.log(line))
+    // TSAReport.forEach(line => console.log(line))
 
-//     // ! Now, check between those two, see if there are any entries in NSSDRtoTSA that don't have a match in the TSAtoNSSDR list and viceversa
-//     // ! Create a final report, showing issues in each category.
-//     // TODO add a catch for undefined invoices in NSSDRtoTSA check
+    // ! Now, check between those two, see if there are any entries in NSSDRtoTSA that don't have a match in the TSAtoNSSDR list and viceversa
+    // ! Create a final report, showing issues in each category.
+    // TODO add a catch for undefined invoices in NSSDRtoTSA check
 
-//     mongoose.connection.close();
-// };
+    mongoose.connection.close();
+};
 
-// rectify();
+rectify();
 
 module.exports = {
     completeCheck

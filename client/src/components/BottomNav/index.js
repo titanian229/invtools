@@ -18,11 +18,12 @@ const useStyles = makeStyles((theme) => ({
 const BottomNav = () => {
     const classes = useStyles();
     const [value, setValue] = useState(0);
-    // const history = useHistory()
+    const history = useHistory()
     return (
         <BottomNavigation
             value={value}
             onChange={(event, newValue) => {
+                
                 setValue(newValue);
             }}
             showLabels
