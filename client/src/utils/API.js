@@ -8,4 +8,7 @@ export default {
     getTSA: () => {
         return fetch('/api/tsa').then((result) => result.json());
     },
+    getReport: () => {
+        return fetch('/api/invRectification').then((result) => result.json());
+    },
 };

@@ -15,6 +15,20 @@ module.exports = (router) => {
             res.status(500).send({ error: 'Something went wrong with the server' });
         }
     });
+    router.get('/api/invRectification/', async (req, res) => {
+        try {
+            const { overviewReport, totalOverviewOffsets, finalReport } = await rectifyInventory.completeCheck();
+            res.status(200).send({
+                message: 'Successfully generated report',
+                overviewReport,
+                totalOverviewOffsets,
+                finalReport,
+            });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({ error: "There was an error generating your report, it's been logged.  Ask James." });
+        }
+    });
     router.get('/api/invRectification/:dateStart/:dateEnd', async ({ params }, res) => {
         try {
             const { overviewReport, totalOverviewOffsets, finalReport } = await rectifyInventory.completeCheck(

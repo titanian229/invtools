@@ -233,6 +233,21 @@ const reduceTotalQtyDollarAmount = (accumulatedResults, row) => {
     return accumulatedResults;
 };
 
+const reduceTotalQtyDollarAmountDate = (accumulatedResults, row) => {
+    accumulatedResults.qty = addStrings(accumulatedResults.qty, row.qty);
+    accumulatedResults.dollarAmount = addStrings(accumulatedResults.dollarAmount, row.dollarAmount);
+
+    if (accumulatedResults.date === null){
+        accumulatedResults.date = row.date
+    } else {
+        if (accumulatedResults.date > row.date){
+            accumulatedResults.date = row.date
+        }
+    }
+
+    return accumulatedResults;
+};
+
 // TODO write check that gathers list of items from each array, and compares items in single loop
 const completeCheck = async (dateStart = new Date(1900, 1, 1, 0, 0, 0, 0), dateEnd = new Date()) => {
     // generate unique items in tsa and nssdr and combine
@@ -282,7 +297,7 @@ const completeCheck = async (dateStart = new Date(1900, 1, 1, 0, 0, 0, 0), dateE
         invoices = invoices.map((invoiceNumber) =>
             combinedRows
                 .filter((row) => row.invoiceNumber === invoiceNumber)
-                .reduce(reduceTotalQtyDollarAmount, { invoiceNumber, qty: 0, dollarAmount: 0 })
+                .reduce(reduceTotalQtyDollarAmountDate, { invoiceNumber, qty: 0, dollarAmount: 0, date: null })
         );
 
         finalReportItems.push({ itemNumber, invoices });
