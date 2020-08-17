@@ -57,7 +57,7 @@ const Report = (props) => {
                 <Table aria-label="full report table">
                     <TableHead>
                         <TableRow>
-                            <TableCell />
+                            <TableCell  style={{maxWidth: '3ch'}} />
                             <TableCell>Item #</TableCell>
                             <TableCell>Qty</TableCell>
                             <TableCell>$</TableCell>
@@ -79,3 +79,4 @@ export default Report;
 // TODO Add in search in NSSDR and TSA values, search by inv, item
 // TODO print report function
 // TODO sort table by date, highlight things at either end as suspect, +numbers at the end and -at the start
+// TODO for search show date range of earliest and latest

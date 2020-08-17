@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button } from '@material-ui/core';
+import { Box, Typography, Button, Backdrop, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Report from '../components/Report';
 import API from '../utils/API';
@@ -12,12 +12,13 @@ const useStyles = makeStyles((theme) => ({
     header: {
         margin: theme.spacing(2, 0),
     },
-    generateContainer: {
-
-    },
+    generateContainer: {},
     generateButton: {
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
     },
+    backdrop: {
+        zIndex: 1000,
+    }
 }));
 
 const columns = [
@@ -54,7 +55,7 @@ const columns = [
 ];
 
 const InventoryRectification = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [nssdr, setNssdr] = useState([]);
     const [tsa, setTsa] = useState([]);
     const [report, setReport] = useState(null);
@@ -75,13 +76,17 @@ const InventoryRectification = () => {
     };
 
     const fetchReport = async () => {
-        const reportContents = await API.getReport()
-        setReport(reportContents)
-    }
+        setLoading(true)
+        const reportContents = await API.getReport();
+        setReport(reportContents);
+        setLoading(false)
+    };
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    // TODO Show "Creating report" loading message
 
     return (
         <Box className={classes.container}>
@@ -89,6 +94,9 @@ const InventoryRectification = () => {
             <Button onClick={fetchReport} variant="contained" color="primary" className={classes.generateButton}>
                 Generate Report
             </Button>
+            <Backdrop className={classes.backdrop} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             {report && <Report report={report} />}
             {nssdr.length > 0 && (
                 <>

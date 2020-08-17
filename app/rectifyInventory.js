@@ -300,7 +300,7 @@ const completeCheck = async (dateStart = new Date(1900, 1, 1, 0, 0, 0, 0), dateE
                 .reduce(reduceTotalQtyDollarAmountDate, { invoiceNumber, qty: 0, dollarAmount: 0, date: null })
         );
 
-        finalReportItems.push({ itemNumber, invoices });
+        finalReportItems.push({...invoices.reduce(reduceTotalQtyDollarAmount, {qty: 0, dollarAmount: 0}), itemNumber,  invoices });
 
         // const placeholderVariableName = combinedRows.reduce((accumulator, row) => {
 
